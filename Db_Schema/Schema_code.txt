@@ -1,0 +1,58 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table user {
+  userId integer [primary key]
+  userName varchar
+  email varchar
+  password varchar
+  roleId varchar
+  
+}
+
+Table roles {
+  roleId integer [primary key]
+  roleName varchar
+}
+
+Table design {
+  designId integer [primary key]
+  designtitle varchar
+  description varchar
+  createdBy varchar
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table feedback {
+  feedbackId integer [primary key]
+  designId integer
+  userId integer
+  questionId integer
+  response varchar
+  submittedAt timestamp
+}
+
+Table analytics {
+   analyticsId integer [primary key]
+  designId integer
+  totalFeedbackCount integer
+  averageRating float
+  createdAt timestamp
+}
+
+Table dashboard{
+  designs list
+  viewAnalytics_admin list
+  feedbackSubmission varchar
+}
+
+//Relationships
+Ref: user.userId < feedback.userId // one-to-many
+Ref: user.userId < design.createdBy // one-to-many
+Ref: design.designId < feedback.designId // one-to-many
+Ref: design.designId < analytics.designId // one-to-one
+Ref: user.roleId < roles.roleId // many-to-one give
+Ref: dashboard.designs < design.designId // one-to-many
+Ref: dashboard.viewAnalytics_admin < analytics.analyticsId // one-to-many
+Ref: dashboard.feedbackSubmission < feedback.feedbackId // one-to-many
